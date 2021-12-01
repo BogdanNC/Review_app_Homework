@@ -1,0 +1,7 @@
+Starting audit...
+[ERROR] C:\Users\bogda\Documents\GitHub\tema1\oop-asignments\teme\tema\.\src\comands\Rate.java:6:8: Unused import - java.util.HashMap. [UnusedImports]
+[ERROR] C:\Users\bogda\Documents\GitHub\tema1\oop-asignments\teme\tema\.\src\common\src\entertainment\Serials.java:28:32: Parameter seasonsList should be final. [FinalParameters]
+[ERROR] C:\Users\bogda\Documents\GitHub\tema1\oop-asignments\teme\tema\.\src\entertainment\Serials.java:28:32: Parameter seasonsList should be final. [FinalParameters]
+[ERROR] C:\Users\bogda\Documents\GitHub\tema1\oop-asignments\teme\tema\.\src\queries\ActorAction.java:82: Line is longer than 100 characters (found 108). [LineLength]
+Audit done.
+Checkstyle ends with 4 errors.
