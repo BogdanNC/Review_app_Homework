@@ -3,7 +3,6 @@ package comands;
 import entertainment.Season;
 import fileio.Input;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public final class Rate {

@@ -8,6 +8,9 @@ import comands.View;
 import fileio.Writer;
 import org.json.simple.JSONArray;
 import queries.ActorAction;
+import queries.MovieAction;
+import queries.ShowAction;
+import queries.UserAction;
 
 import java.io.IOException;
 
@@ -46,11 +49,29 @@ public final class DetType {
             }
             if (command.getActionType().equals("query")) {
                 if (command.getObjectType().equals("actors")) {
-                    output = ActorAction.actoraction(input, command.getFilters(),
+                    output = ActorAction.actoraction(input, command.getCriteria(),
+                            command.getFilters(), command.getNumber());
+                    arrayResault.add(finalWriter.writeFile(command.getActionId(), output, output));
+                }
+                if (command.getObjectType().equals("movies")) {
+                    output = MovieAction.movieaction(input, command.getCriteria(),
+                            command.getFilters(), command.getNumber());
+                    arrayResault.add(finalWriter.writeFile(command.getActionId(), output, output));
+                }
+                if (command.getObjectType().equals("shows")) {
+                    output = ShowAction.showaction(input, command.getCriteria(),
+                            command.getFilters(), command.getNumber());
+                    arrayResault.add(finalWriter.writeFile(command.getActionId(), output, output));
+                }
+                if (command.getObjectType().equals("users")) {
+                    output = UserAction.useraction(input, command.getCriteria(),
                             command.getNumber());
                     arrayResault.add(finalWriter.writeFile(command.getActionId(), output, output));
                 }
             }
+            //if (command.getActionType().equals("recommendation")) {
+
+            //}
         }
     }
 }
