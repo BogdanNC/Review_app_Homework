@@ -56,12 +56,13 @@ public final class MovieAction {
      * @return
      */
     public static String movieaction(final Input input, final String criteria,
-                                     final List<List<String>> filters, final Integer number, String sortType) {
+                                     final List<List<String>> filters,
+                                     final Integer number, final String sortType) {
         if (criteria.equals("ratings")) {
             Map<String, Double> movieRating = new HashMap<>();
             for (var movies: input.getMovies()) {
                 if (checkYearGenreCriteria(movies, filters)) {
-                    if (RatingCalculator.movieRating(movies) > 0){
+                    if (RatingCalculator.movieRating(movies) > 0) {
                         movieRating.put(movies.getTitle(), RatingCalculator.movieRating(movies));
                     }
                 }

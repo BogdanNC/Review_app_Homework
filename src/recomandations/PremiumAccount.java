@@ -1,7 +1,6 @@
 package recomandations;
 
 import calculators.RatingCalculator;
-import calculators.ViewCalculator;
 import fileio.Input;
 import utils.PrintReverseSortedHash;
 
@@ -55,32 +54,18 @@ public final class PremiumAccount {
                         List<Map.Entry<String, Integer>> sortedGenre
                                 = sorted.sortReverseHash(popularGenre);
 
-                        Map<String, Integer> popularVideos = new HashMap<>();
-                        for (var shows: input.getSerials()) {
-                            popularVideos.put(shows.getTitle(),
-                                    ViewCalculator.views(input, shows.getTitle()));
-                        }
-                        for (var movies: input.getMovies()) {
-                            popularVideos.put(movies.getTitle(),
-                                    ViewCalculator.views(input, movies.getTitle()));
-                        }
-                        List<Map.Entry<String, Integer>> sortedVideos = sorted.sortReverseHash(popularVideos);
                         for (Map.Entry<String, Integer> genre: sortedGenre) {
-                            for (Map.Entry<String, Integer> popMovie: sortedVideos) {
-                                if (!(user.getHistory().containsKey(popMovie.getKey()))){
-                                    for (var movie: input.getMovies()) {
-                                        if (movie.getTitle().equals(popMovie.getKey())) {
-                                            if (movie.getGenres().contains(genre.getKey())) {
-                                                return "PopularRecommendation result: " + movie.getTitle();
-                                            }
-                                        }
+                            for (var video: input.getMovies()) {
+                                if (video.getGenres().contains(genre.getKey())) {
+                                    if (!(user.getHistory().containsKey(video.getTitle()))) {
+                                        return "PopularRecommendation result: " + video.getTitle();
                                     }
-                                    for (var show: input.getSerials()) {
-                                        if (show.getTitle().equals(popMovie.getKey())) {
-                                            if (show.getGenres().contains(genre.getKey())) {
-                                                return "PopularRecommendation result: " + show.getTitle();
-                                            }
-                                        }
+                                }
+                            }
+                            for (var video: input.getSerials()) {
+                                if (video.getGenres().contains(genre.getKey())) {
+                                    if (!(user.getHistory().containsKey(video.getTitle()))) {
+                                        return "PopularRecommendation result: " + video.getTitle();
                                     }
                                 }
                             }
@@ -104,11 +89,16 @@ public final class PremiumAccount {
                                 }
                             }
                         }
-                        PrintReverseSortedHash<Integer> sorted = new PrintReverseSortedHash<>();
-                        List<Map.Entry<String, Integer>> sortedFavorites = sorted.sortReverseHash(favouriteVideo);
+
+                        List<Map.Entry<String, Integer>> sortedFavorites
+                                = new ArrayList<>(favouriteVideo.entrySet());
+                        sortedFavorites.sort((e1, e2) -> {
+                            return e2.getValue().compareTo(e1.getValue());
+                        });
 
                         for (Map.Entry<String, Integer> video: sortedFavorites) {
                             if (!(user.getHistory().containsKey(video.getKey()))) {
+
                                 return "FavoriteRecommendation result: " + video.getKey();
                             }
                         }
@@ -124,7 +114,7 @@ public final class PremiumAccount {
                         Map<String, Double> ratedSearch = new HashMap<>();
                         List<String> bestRated0Search = new ArrayList<>();
                         for (var movie: input.getMovies()) {
-                            if (!(user.getHistory().containsKey(movie.getTitle()))){
+                            if (!(user.getHistory().containsKey(movie.getTitle()))) {
                                 if (movie.getGenres().contains(searchGenre)) {
                                     if (RatingCalculator.movieRating(movie) > 0) {
                                         ratedSearch.put(movie.getTitle(),
@@ -152,14 +142,14 @@ public final class PremiumAccount {
                         List<Map.Entry<String, Double>> sortlist
                                 = sorted.sortReverseHash(ratedSearch);
                         String toPrint = "";
-                        for (int i = 0; i < sortlist.size(); i++) {
-                            if (sortlist.get(i).getValue() > 0) {
-                                toPrint = toPrint + sortlist.get(i).getKey() + ", ";
-                            }
-                        }
                         if (!(bestRated0Search.isEmpty())) {
                             for (int i = 0; i < bestRated0Search.size(); i++) {
                                 toPrint = toPrint + bestRated0Search.get(i) + ", ";
+                            }
+                        }
+                        for (int i = 0; i < sortlist.size(); i++) {
+                            if (sortlist.get(i).getValue() > 0) {
+                                toPrint = toPrint + sortlist.get(i).getKey() + ", ";
                             }
                         }
                         if (!(toPrint.isEmpty())) {
@@ -171,6 +161,6 @@ public final class PremiumAccount {
                 }
             }
         }
-        return "work in progress";
+        return "eror404";
     }
 }

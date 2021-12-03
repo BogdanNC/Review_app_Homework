@@ -21,7 +21,7 @@ public final class UserAction {
      * @return
      */
     public static String useraction(final Input input, final String criteria,
-                                    final Integer number, String sortType) {
+                                    final Integer number, final String sortType) {
         if (criteria.equals("num_ratings")) {
             Map<String, Integer> userRatings = new HashMap<>();
             for (var movie: input.getMovies()) {

@@ -7,7 +7,6 @@ import calculators.RatingCalculator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public final class StandardAccount {
@@ -80,7 +79,7 @@ public final class StandardAccount {
                         if (!(bestUnseenRating0.isEmpty())) {
                             toPrint = bestUnseenRating0.get(0);
                         }
-                        if (toPrint.isEmpty()){
+                        if (toPrint.isEmpty()) {
                             return "BestRatedUnseenRecommendation cannot be applied!";
                         } else {
                             return "BestRatedUnseenRecommendation result: " + toPrint;

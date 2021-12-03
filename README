@@ -1,38 +1,27 @@
-Object Oriented Programming Course
-Homework - VideosDB
+Am folosit baza de date oferita de voi.
 
-November 2021
+Am creat si eu niste clase care sa poata prelua functionalitatea unei baze de
+date intrucat erau cerute in enunt.
 
-# Info
-https://ocw.cs.pub.ro/courses/poo-ca-cd/teme/tema
+Am facut cate un pachet separat pentru comenzi, quariuri si recomandari
 
-# About the code
+    Am folosit abuziv hashmapu-uri pentru a memora in general cate
+doua valori asociate, fie nume si rating, nume si numar de vizionari, etc.
+le-am sortat apoi si le-am afisat.
 
-We provide the input tests, the logic that parses them and the checker that runs them.
+    Am creat trei clase statice care sa se ocupe de partea de printare in utils
+Practic sorteaza hashmap-ul dupa criteriile date si apoi printeaza valorile nenule
 
-* test_db - contains the tests in JSON format
-* src
-   * checker - the checker's sources including the checkstyle necessary files, not to be modified
-   * fileio - classes for parsing the input files, not to be modified
-   * common, utils
-        * contain utility classes with constants and static methods
-        * you can add your own functionality in the existing classes or add new classes as well
-   * actor
-        * contains an enum for the types of awards an actor can have - do not modify it
-        * you can add here your actor related classes
-   * entertainment
-        * contains an enum for the supported video genres - do not modify it
-        * class for representing a Season of a tv show - do not modify it
-        * you can add here your entertainment related classes
+Movie si Serial mostenesc clasa Show, deci au la baza cam aceleasi chestii, cu mici exceptii.
 
-We encourage you to organize your implementation in packages based on the functionality their classes offer. Try to keep
-your code modular, readable and documented.
+Am modificat modul de memorare al rating-ului in asa fel incat sa memorez utilizatorul
+drept key si ratingul dat de acesta drept valoare pentru a usura verificarea daca
+acestia au dat sau nu rating.
 
-# Testing
+P.S: checkstyle-ul urla la linia 28 din serials ... care nu exista -_-
 
-The Main class runs the checker on your implementation. Add the entry point to your implementation in it.
-
-Run Main to test your implementation from the IDE or from command line.
-
-Run the main method from Test class with the name of the input file from the command line and the result will be written
-to the out.txt file. Thus, you can compare this result with ref.
+Feedback: enuntul problemei nu a fost foarte bine formulat si exista unele
+teste care necesita reverse engineering. Spre exemplu pe OCW este mentionat ca
+popularitatea genului se ia dupa numarul de view's al tuturor videourilor, nu dupa
+numarul de videouri dintr-o clasa. De altfel nu se mentioneaza ca si tipul de
+sortare ( ascendent, descendent ) ne este cerut. Trebuie sa ne dam noi seama din exemple
