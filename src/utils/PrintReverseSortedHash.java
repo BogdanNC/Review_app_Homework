@@ -16,12 +16,12 @@ public final class PrintReverseSortedHash<T extends  Comparable> {
      * @param hashMap
      * @return
      */
-    public List<Map.Entry<String, T>> sortHash(final Map<String, T> hashMap) {
+    public List<Map.Entry<String, T>> sortReverseHash(final Map<String, T> hashMap) {
 
         List<Map.Entry<String, T>> sortlist = new ArrayList<>(hashMap.entrySet());
         sortlist.sort((e1, e2) -> {
             if (e1.getValue().compareTo(e2.getValue()) == 0) {
-                return e1.getKey().compareTo(e2.getKey());
+                return e2.getKey().compareTo(e1.getKey());
             }
             return e2.getValue().compareTo(e1.getValue());
         });

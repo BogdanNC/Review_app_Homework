@@ -1,8 +1,10 @@
 package queries;
 
+import actor.ActorsAwards;
 import entertainment.Season;
 import fileio.Input;
-import utils.PrintSortedHash;
+import utils.PrintingClass;
+import utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -21,10 +23,12 @@ public final class ActorAction {
      * @param input
      * @param filters
      * @param number
+     * @param sortType
      * @return
      */
     public static String actoraction(final Input input, final String criteria,
-                                     final List<List<String>> filters, final Integer number) {
+                                     final List<List<String>> filters, final Integer number,
+                                     String sortType) {
         if (criteria.equals("average")) {
             Map<String, Double> actorRating = new HashMap<>();
             double sum = 0, denominator = 0;
@@ -110,52 +114,24 @@ public final class ActorAction {
             int noAwards;
             for (var actor: input.getActors()) {
                 noAwards = 0;
+                int ok = 0;
                 for (String awards: filters.get(3)) {
-                    for (var count: actor.getAwards().entrySet()) {
-                        if (awards.equals(count.getKey())) {
+                    ActorsAwards award = Utils.stringToAwards(awards);
+                    for (Map.Entry<ActorsAwards, Integer> count: actor.getAwards().entrySet()) {
+                        if (count.getKey().equals(award)) {
+                            ok++;
+                        }
                         noAwards = noAwards + count.getValue();
-                        }
                     }
                 }
-                actorRating.put(actor.getName(), noAwards);
-            }
-            PrintSortedHash<Integer> top = new PrintSortedHash<>();
-            List<Map.Entry<String, Integer>> sortlist = top.sortHash(actorRating);
-            String toPrint = "";
-            for (int i = 0; i < sortlist.size(); i++) {
-                if (!(sortlist.get(i).getValue().equals(0))) {
-                    toPrint = toPrint + sortlist.get(i).getKey() + ", ";
+                if (ok == filters.get(3).size()) {
+                    actorRating.put(actor.getName(), noAwards);
                 }
             }
-            if (!(toPrint.isEmpty())) {
-                toPrint = toPrint.substring(0, toPrint.length() - 2);
-            }
+            PrintingClass<Integer> readyToPrint = new PrintingClass<>();
+            String toPrint = readyToPrint.printing(actorRating, number, sortType);
             return "Query result: [" + toPrint + "]";
-            /*List<Map.Entry<String, Integer>> sortlist = new ArrayList<>(actorRating.entrySet());
-            sortlist.sort(new Comparator<Map.Entry<String, Integer>>() {
-                @Override
-                public int compare(final Map.Entry<String, Integer> o1,
-                                   final Map.Entry<String, Integer> o2) {
-                    if (o1.getValue() > o2.getValue()) {
-                        return -1;
-                    } else {
-                        if (o1.getValue() < o2.getValue()) {
-                            return 1;
-                        }
-                    }
-                    return o1.getKey().compareTo(o2.getKey());
-                }
-            });
-            String toPrint = "";
-            for (int i = 0; i < sortlist.size(); i++) {
-                if (sortlist.get(i).getValue() > 0) {
-                    toPrint = toPrint + sortlist.get(i).getKey() + ", ";
-                }
-            }
-            if (!(toPrint.isEmpty())) {
-                toPrint = toPrint.substring(0, toPrint.length() - 2);
-            }
-            return "Query result: [" + toPrint + "]";*/
+
         } else if (criteria.equals("filter_description")) {
 
             ArrayList<String> actorRating = new ArrayList<>();

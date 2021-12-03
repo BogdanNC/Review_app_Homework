@@ -22,7 +22,7 @@ public final class View {
                 if (user.getHistory().containsKey(title)) {
                     user.getHistory().put(title, user.getHistory().get(title) + 1);
                     return "success -> " + title
-                            + " with total views of " + user.getHistory().get(title);
+                            + " was viewed with total views of " + user.getHistory().get(title);
                 } else {
                     user.getHistory().putIfAbsent(title, 1);
                     return "success -> " + title

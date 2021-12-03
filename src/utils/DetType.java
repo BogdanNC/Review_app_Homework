@@ -1,5 +1,7 @@
 package utils;
 
+import recomandations.PremiumAccount;
+import recomandations.StandardAccount;
 import comands.Favorite;
 import comands.Rate;
 import fileio.ActionInputData;
@@ -50,28 +52,52 @@ public final class DetType {
             if (command.getActionType().equals("query")) {
                 if (command.getObjectType().equals("actors")) {
                     output = ActorAction.actoraction(input, command.getCriteria(),
-                            command.getFilters(), command.getNumber());
+                            command.getFilters(), command.getNumber(), command.getSortType());
                     arrayResault.add(finalWriter.writeFile(command.getActionId(), output, output));
                 }
                 if (command.getObjectType().equals("movies")) {
                     output = MovieAction.movieaction(input, command.getCriteria(),
-                            command.getFilters(), command.getNumber());
+                            command.getFilters(), command.getNumber(), command.getSortType());
                     arrayResault.add(finalWriter.writeFile(command.getActionId(), output, output));
                 }
                 if (command.getObjectType().equals("shows")) {
                     output = ShowAction.showaction(input, command.getCriteria(),
-                            command.getFilters(), command.getNumber());
+                            command.getFilters(), command.getNumber(), command.getSortType());
                     arrayResault.add(finalWriter.writeFile(command.getActionId(), output, output));
                 }
                 if (command.getObjectType().equals("users")) {
                     output = UserAction.useraction(input, command.getCriteria(),
-                            command.getNumber());
+                            command.getNumber(), command.getSortType());
                     arrayResault.add(finalWriter.writeFile(command.getActionId(), output, output));
                 }
             }
-            //if (command.getActionType().equals("recommendation")) {
-
-            //}
+            if (command.getActionType().equals("recommendation")) {
+                if (command.getType().equals("standard")) {
+                    output  = StandardAccount.standard(input, command.getType(),
+                            command.getUsername());
+                    arrayResault.add(finalWriter.writeFile(command.getActionId(), output, output));
+                }
+                if (command.getType().equals("best_unseen")) {
+                    output = StandardAccount.standard(input, command.getType(),
+                            command.getUsername());
+                    arrayResault.add(finalWriter.writeFile(command.getActionId(), output, output));
+                }
+                if (command.getType().equals("popular")) {
+                    output = PremiumAccount.premium(input, command.getType(),
+                            command.getUsername(), command.getGenre());
+                    arrayResault.add(finalWriter.writeFile(command.getActionId(), output, output));
+                }
+                if (command.getType().equals("favorite")) {
+                    output = PremiumAccount.premium(input, command.getType(),
+                            command.getUsername(), command.getGenre());
+                    arrayResault.add(finalWriter.writeFile(command.getActionId(), output, output));
+                }
+                if (command.getType().equals("search")) {
+                    output = PremiumAccount.premium(input, command.getType(),
+                            command.getUsername(), command.getGenre());
+                    arrayResault.add(finalWriter.writeFile(command.getActionId(), output, output));
+                }
+            }
         }
     }
 }

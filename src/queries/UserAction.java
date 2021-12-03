@@ -2,13 +2,12 @@ package queries;
 
 import entertainment.Season;
 import fileio.Input;
-import utils.PrintSortedHash;
+import utils.PrintingClass;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class UserAction {
+public final class UserAction {
     /**
      * for coding style
      */
@@ -18,10 +17,11 @@ public class UserAction {
      *
      * @param input
      * @param number
+     * @param sortType
      * @return
      */
     public static String useraction(final Input input, final String criteria,
-                                    final Integer number) {
+                                    final Integer number, String sortType) {
         if (criteria.equals("num_ratings")) {
             Map<String, Integer> userRatings = new HashMap<>();
             for (var movie: input.getMovies()) {
@@ -33,7 +33,7 @@ public class UserAction {
                     }
                 }
             }
-            for (var show: input.getSerials()){
+            for (var show: input.getSerials()) {
                 for (Season season: show.getSeasons()) {
                     for (Map.Entry<String, Double> val: season.getRatings().entrySet()) {
                         if (userRatings.containsKey(val.getKey())) {
@@ -44,18 +44,8 @@ public class UserAction {
                     }
                 }
             }
-
-            PrintSortedHash<Integer> sorted = new PrintSortedHash<>();
-            List<Map.Entry<String, Integer>> sortlist = sorted.sortHash(userRatings);
-            String toPrint = "";
-            for (int i = 0; i < sortlist.size(); i++) {
-                if (sortlist.get(i).getValue() > 0) {
-                    toPrint = toPrint + sortlist.get(i).getKey() + ", ";
-                }
-            }
-            if (!(toPrint.isEmpty())) {
-                toPrint = toPrint.substring(0, toPrint.length() - 2);
-            }
+            PrintingClass<Integer> readyToPrint = new PrintingClass<>();
+            String toPrint = readyToPrint.printing(userRatings, number, sortType);
             return "Query result: [" + toPrint + "]";
         }
         return "Query -> [], adica e empty ba!";

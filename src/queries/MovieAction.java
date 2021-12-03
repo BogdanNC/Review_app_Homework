@@ -1,9 +1,10 @@
 package queries;
 
+import calculators.ViewCalculator;
 import fileio.Input;
 import fileio.MovieInputData;
-import utils.PrintReverseSortedHash;
-import utils.PrintSortedHash;
+import calculators.RatingCalculator;
+import utils.PrintingClass;
 
 import java.util.HashMap;
 import java.util.List;
@@ -51,38 +52,25 @@ public final class MovieAction {
      * @param criteria
      * @param filters
      * @param number
+     * @param sortType
      * @return
      */
     public static String movieaction(final Input input, final String criteria,
-                                     final List<List<String>> filters, final Integer number) {
+                                     final List<List<String>> filters, final Integer number, String sortType) {
         if (criteria.equals("ratings")) {
             Map<String, Double> movieRating = new HashMap<>();
             for (var movies: input.getMovies()) {
                 if (checkYearGenreCriteria(movies, filters)) {
-                    double avrage = 0.0;
-                    if (movies.getRate().size() > 0) {
-                        avrage = 0.0;
-                        for (Map.Entry<String, Double> value : movies.getRate().entrySet()) {
-                            avrage = avrage + value.getValue();
-                        }
-                        avrage = avrage / movies.getRate().size(); // calculez ratingul
+                    if (RatingCalculator.movieRating(movies) > 0){
+                        movieRating.put(movies.getTitle(), RatingCalculator.movieRating(movies));
                     }
-                    movieRating.put(movies.getTitle(), avrage);
                 }
             }
-            PrintSortedHash<Double> sorted = new PrintSortedHash<>();
-            List<Map.Entry<String, Double>> sortlist = sorted.sortHash(movieRating);
-            String toPrint = "";
-            for (int i = 0; i < sortlist.size(); i++) {
-                if (!(sortlist.get(i).getValue().equals(0))) {
-                    toPrint = toPrint + sortlist.get(i).getKey() + ", ";
-                }
-            }
-            if (!(toPrint.isEmpty())) {
-                toPrint = toPrint.substring(0, toPrint.length() - 2);
-            }
+            PrintingClass<Double> readyToPrint = new PrintingClass<>();
+            String toPrint = readyToPrint.printing(movieRating, number, sortType);
             return "Query result: [" + toPrint + "]";
         } else if (criteria.equals("favorite")) {
+
             Map<String, Integer> movieFavorites = new HashMap<>();
             for (var movies: input.getMovies()) {
                 if (checkYearGenreCriteria(movies, filters)) {
@@ -97,62 +85,33 @@ public final class MovieAction {
                     movieFavorites.put(movies.getTitle(), noFav);
                 }
             }
-            PrintSortedHash<Integer> sorted = new PrintSortedHash<>();
-            List<Map.Entry<String, Integer>> sortlist = sorted.sortHash(movieFavorites);
-            String toPrint = "";
-            for (int i = 0; i < sortlist.size(); i++) {
-                if (!(sortlist.get(i).getValue().equals(0))) {
-                    toPrint = toPrint + sortlist.get(i).getKey() + ", ";
-                }
-            }
-            if (!(toPrint.isEmpty())) {
-                toPrint = toPrint.substring(0, toPrint.length() - 2);
-            }
+            PrintingClass<Integer> readyToPrint = new PrintingClass<>();
+            String toPrint = readyToPrint.printing(movieFavorites, number, sortType);
             return "Query result: [" + toPrint + "]";
+
         } else if (criteria.equals("longest")) {
+
             Map<String, Integer> movieDurations = new HashMap<>();
             for (var movies: input.getMovies()) {
                 if (checkYearGenreCriteria(movies, filters)) {
                     movieDurations.put(movies.getTitle(), movies.getDuration());
                 }
             }
-            PrintSortedHash<Integer> sorted = new PrintSortedHash<>();
-            List<Map.Entry<String, Integer>> sortlist = sorted.sortHash(movieDurations);
-            String toPrint = "";
-            for (int i = 0; i < sortlist.size(); i++) {
-                if (!(sortlist.get(i).getValue().equals(0))) {
-                    toPrint = toPrint + sortlist.get(i).getKey() + ", ";
-                }
-            }
-            if (!(toPrint.isEmpty())) {
-                toPrint = toPrint.substring(0, toPrint.length() - 2);
-            }
+            PrintingClass<Integer> readyToPrint = new PrintingClass<>();
+            String toPrint = readyToPrint.printing(movieDurations, number, sortType);
             return "Query result: [" + toPrint + "]";
+
         } else if (criteria.equals("most_viewed")) {
+
             Map<String, Integer> movieView = new HashMap<>();
             for (var movies: input.getMovies()) {
                 if (checkYearGenreCriteria(movies, filters)) {
-                    int totalViwes = 0;
-                    for (var user: input.getUsers()) {
-                        Map<String, Integer> history = user.getHistory();
-                        if (history.containsKey(movies.getTitle())) {
-                        totalViwes = totalViwes + history.get(movies.getTitle());
-                        }
-                    }
-                    movieView.put(movies.getTitle(), totalViwes);
+                    movieView.put(movies.getTitle(),
+                            ViewCalculator.views(input, movies.getTitle()));
                 }
             }
-            PrintReverseSortedHash<Integer> sorted = new PrintReverseSortedHash<>();
-            List<Map.Entry<String, Integer>> sortlist = sorted.sortHash(movieView);
-            String toPrint = "";
-            for (int i = 0; i < sortlist.size(); i++) {
-                if (sortlist.get(i).getValue() > 0) {
-                    toPrint = toPrint + sortlist.get(i).getKey() + ", ";
-                }
-            }
-            if (!(toPrint.isEmpty())) {
-                toPrint = toPrint.substring(0, toPrint.length() - 2);
-            }
+            PrintingClass<Integer> readyToPrint = new PrintingClass<>();
+            String toPrint = readyToPrint.printing(movieView, number, sortType);
             return "Query result: [" + toPrint + "]";
         }
         return "work in progress";
